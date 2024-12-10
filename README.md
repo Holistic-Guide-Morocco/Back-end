@@ -1,8 +1,8 @@
-<h1 class="text-2xl font-bold"> Back-end</h1>
+<h1> Back-end</h1>
 
 ## Installation
 
-php artisan migrate
+php artisan migrate <br>
 php artisan serve
 
 ```
