@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +55,6 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::delete('/admin/users/{id}', [AdminController::class, 'destroy']);
     Route::get('/admins', [AdminController::class, 'admins']);
 });
+
+Route::middleware('auth:sanctum')->group(function () {});
+Route::post('/locations', [LocationController::class, 'store']);

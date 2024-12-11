@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class ProfessionalController extends Controller
 {
@@ -21,7 +23,27 @@ class ProfessionalController extends Controller
     public function update(Request $request)
     {
         $user = auth()->user();
-        $user->update($request->only(['username', 'email', 'password']));
+
+        $request->validate([
+            'username' => 'sometimes|string|max:255',
+            'email' => [
+                'sometimes',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'password' => 'sometimes|string|min:8|different:old_password',
+        ]);
+
+        $data = $request->only(['username', 'email', 'password']);
+
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($data);
+
 
         return $user;
     }
@@ -31,6 +53,6 @@ class ProfessionalController extends Controller
         $user = auth()->user();
         $user->delete();
 
-        return response()->json(['message' => 'User deleted']);
+        return response()->json(['message' => 'Professional deleted']);
     }
 }

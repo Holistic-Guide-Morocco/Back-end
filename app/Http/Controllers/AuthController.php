@@ -26,7 +26,7 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-        return response()->json(['user' => $user], 201);
+        return response()->json(['user' => $user->only(['username', 'email', 'role'])], 201);
     }
 
 
